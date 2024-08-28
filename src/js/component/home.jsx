@@ -1,26 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 
 //include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+
+
 
 //create your first component
-const Home = () => {
+function Todolist () {
+	const [toDoList, settoDoList]= useState([])
+	const [task, setTask]= useState("")
+	function deleteTask(index){
+		settoDoList (value=>value.filter((task, taskIndex)=>taskIndex!=index))
+	}
+
 	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+		<div className="container">
+			<input className="form-control mt-5" onChange={(e)=>setTask(e.target.value)} onKeyDown={(e)=>{
+				if (e.key=="Enter"){
+					settoDoList([...toDoList, task])
+					setTask("")
+				}
+			}} value={task} type="text"/>
+			<h5>{toDoList.length?`${toDoList.length} items left`:"No task, Add a task"}</h5>
+			{toDoList.map((task, index)=> <div className="hoverbtn bg-dark d-flex p-2 justify-content-between rounded text-light my-2">
+				<h1>{task}</h1>
+				<span onClick={()=>deleteTask(index)} className="btn btn-danger">Delete</span>
+			</div>)}
+			
 		</div>
 	);
 };
 
-export default Home;
+export default Todolist;
